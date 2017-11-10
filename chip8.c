@@ -181,12 +181,27 @@ int main() {
 						//no carry occurs
 						v[0xF] = 0x00;
 					}
-	
 					v[((opcode & 0x0F00) >> 8)] = (v[((opcode & 0x0F00) >> 8)] +  mem[pc + 1]) % 256;
 					pc += 2;
 				}
-				
+				//8XY5
+				//Subtract the value of VY from VX
+				//Set VF to 00 if a borrow occurs
+				//Set VF to 01 if a borrow does not occur
+				//TODO - Somewhat unclear on the concept of a borrow in Binary math.
+				//Some revisio may be needed
+				else if ((opcode & 0x000F) == 0x0005) {
+					if (v[((opcode & 0x00F0) >> 4)] > v[((opcode & 0x0F00) >> 8)]) {
+						//borrow occurs
+						v[0xF] = 0x00;
+					}
+					else {
+						v[0xF] = 0x01;
+					}
+					v[((opcode & 0x0F00) >> 8)] = v[((opcode & 0x0F00) >> 8)] - v[((opcode & 0x00F0) >> 4)];
+					pc += 2;
 
+				}
 
 				break;
 
