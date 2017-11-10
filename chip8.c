@@ -166,7 +166,26 @@ int main() {
 				//set the value of VX to VX XOR VY
 				else if ((opcode & 0x000F) == 0x0003) {
 					v[((opcode & 0x0F00) >> 8)] = (v[((opcode & 0x0F00) >> 8)] ^ v[((opcode & 0x00F0) >> 4)]);
+					pc += 2;
 				}
+				//8XY4
+				//Add the value of VY to VX
+				//If a carry occurs, set VF to 01
+				//If a carry does not occur, set VF to 00
+				else if ((opcode & 0x000F) == 0x0004) {
+					if (v[((opcode & 0x0F00) >> 8)] + v[((opcode & 0x00F0) >> 4)] > 255) {
+						//carry occurs
+						v[0xF] = 0x01;
+					}
+					else {
+						//no carry occurs
+						v[0xF] = 0x00;
+					}
+	
+					v[((opcode & 0x0F00) >> 8)] = (v[((opcode & 0x0F00) >> 8)] +  mem[pc + 1]) % 256;
+					pc += 2;
+				}
+				
 
 
 				break;
