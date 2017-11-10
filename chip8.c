@@ -150,19 +150,19 @@ int main() {
 					v[((opcode & 0x0F00) >> 8)] = v[((opcode & 0x00F0) >> 4)];
 					pc += 2;
 				}
-				//8XY1 TODO - UNTESTED
+				//8XY1
 				//set the value of VX to VX OR VY
 				else if ((opcode & 0x000F) == 0x0001) {
 					v[((opcode & 0x0F00) >> 8)] = (v[((opcode & 0x0F00) >> 8)] | v[((opcode & 0x00F0) >> 4)]);
 					pc += 2;
 				}
-				//8XY2 TODO - UNTESTED
+				//8XY2
 				//set the value of VX to VX AND VY
 				else if ((opcode & 0x000F) == 0x0002) {
 					v[((opcode & 0x0F00) >> 8)] = (v[((opcode & 0x0F00) >> 8)] & v[((opcode & 0x00F0) >> 4)]);
 					pc += 2;
 				}
-				//8XY3 TODO - UNTESTED
+				//8XY3
 				//set the value of VX to VX XOR VY
 				else if ((opcode & 0x000F) == 0x0003) {
 					v[((opcode & 0x0F00) >> 8)] = (v[((opcode & 0x0F00) >> 8)] ^ v[((opcode & 0x00F0) >> 4)]);
