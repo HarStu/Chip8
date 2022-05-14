@@ -43,7 +43,7 @@ int main() {
 		//fetch opcode
 		//decode opcode
 		//execute opcode
-		//(make sure to increate the pc by 2
+		//(make sure to increase the pc by 2)
 		//
 		//update timers
 		//if the drawflag is set, draw the screen
@@ -189,7 +189,7 @@ int main() {
 				//Set VF to 00 if a borrow occurs
 				//Set VF to 01 if a borrow does not occur
 				//TODO - Somewhat unclear on the concept of a borrow in Binary math.
-				//Some revisio may be needed
+				//Some revision may be needed
 				else if ((opcode & 0x000F) == 0x0005) {
 					if (v[((opcode & 0x00F0) >> 4)] > v[((opcode & 0x0F00) >> 8)]) {
 						//borrow occurs
