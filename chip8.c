@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "chip8.h"
 
 //declaring the registers
 //16 registers, from v0 to vF are avalible
@@ -21,18 +22,6 @@ unsigned char mem[4096];
 //opcode currently in use
 //fetched using bitwise OR
 unsigned short opcode;
-
-//loads data from file into mem
-void loadData();
-
-//outputs a dump of the data loaded into [mem]
-void outputMemDump();
-
-//loads mem full of empty data
-void loadEmptyMem();
-
-//prints the value of each register, sp, and pc
-void statusDump();
 
 int main() {
 	loadData();
