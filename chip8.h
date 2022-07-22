@@ -2,7 +2,7 @@
 #define _CHIP8_H
 
 //loads data from file into mem
-void loadData();
+void loadData(unsigned char *mem, int memSize, const char *path);
 
 //outputs a dump of the data loaded into [mem]
 void outputMemDump();

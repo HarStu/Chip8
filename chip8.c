@@ -24,7 +24,7 @@ unsigned char mem[4096];
 unsigned short opcode;
 
 int main() {
-	loadData();
+	loadData(mem, 4096, "./test.ch8");
 
 	pc = 0;
 	int emergencyBreakCounter = 0;
@@ -223,10 +223,10 @@ int main() {
 	return 0;
 }
 
-void loadData() {
+void loadData(unsigned char *mem, int memSize, const char *path) {
 	FILE *fp;
-	fp = fopen("test.ch8","rb");
-	while (fread(mem,1,4096,fp));
+	fp = fopen(path,"rb");
+	while (fread(mem,1,memSize,fp));
 	fclose(fp);
 }
 
