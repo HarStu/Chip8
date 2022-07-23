@@ -1,10 +1,14 @@
-#include <stdio.h>
 #include "chip8.h"
+
+#include <stdio.h>
+#include "cpu.h"
 
 // declare struct which holds all data about the simulated machine
 Chip8 c8;
 
 int main() {
+	cycle();
+
 	loadData(c8.mem, 4096, "./test.ch8");
 
 	c8.pc = 0;
