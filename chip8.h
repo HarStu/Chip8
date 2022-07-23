@@ -3,7 +3,7 @@
 
 // struct holding the full state of a Chip-8 system
 typedef struct Chip8 {
-    unsigned char v[16];       // registers
+    unsigned char v[16];       // registers (0x0 - 0xF)
     unsigned short pc;         // progam counter
     unsigned short I;          // index register
     unsigned short stack[16];  // stack
