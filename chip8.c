@@ -3,17 +3,6 @@
 #include <stdio.h>
 #include "cpu.h"
 
-// declare struct which holds all data about the simulated machine
-Chip8 c8;
-
-int main() {
-	loadData(&c8, 4096, "./test.ch8");
-	c8.pc = 0;
-	while (c8.pc < 32) {
-		cycle(&c8);
-	}
-	return 0;
-}
 
 // load data from the file located at 'path' into the memory of the simulated
 // machine c8. Must specify the size of c8's memory (in bytes)

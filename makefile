@@ -9,8 +9,8 @@ TARGET = H_CHIP_8
 
 default: all
 
-all: chip8.o cpu.o
-	$(CC) $(CFLAGS) $(TARGET) chip8.o cpu.o
+all: main.c chip8.o cpu.o
+	$(CC) $(CFLAGS) $(TARGET) main.c chip8.o cpu.o
 
 chip8.o: chip8.c
 	$(CC) chip8.c -o chip8.o -c

@@ -3,16 +3,11 @@
 #include <stdio.h>
 #include "chip8.h"
 
+
 void cycle(Chip8 *c8) {
     //fetch opcode
     //decode opcode
     //execute opcode
-    //(make sure to increase the pc by 2)
-    //
-    //update timers
-    //if the drawflag is set, draw the screen
-    //
-    //store key press state
     
     //here, the value mem[pc] is shifted 8 zeroes to the left
     //then, a bitwise OR merges it with the data point next to it
