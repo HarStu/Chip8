@@ -188,6 +188,6 @@ void cycle(Chip8 *c8) {
             printf("broken opcode!");
     }
     printf("\nopcode tested: %04x", opcode);
-    statusDump();
+    statusDump(c8);
     printf("\n");
 }

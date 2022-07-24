@@ -12,15 +12,15 @@ typedef struct Chip8 {
 } Chip8;
 
 // loads data from file into mem
-void loadData(unsigned char *mem, int memSize, const char *path);
+void loadData(Chip8 *c8, int memSize, const char *path);
 
 // outputs a dump of the data loaded into [mem]
-void outputMemDump();
+void outputMemDump(Chip8 *c8);
 
 // loads mem full of empty data
-void loadEmptyMem();
+void loadEmptyMem(Chip8 *c8);
 
 // prints the value of each register, sp, and pc
-void statusDump();
+void statusDump(Chip8 *c8);
 
 #endif // _CHIP8_H
