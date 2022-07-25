@@ -10,6 +10,6 @@ void startcurses();
 void endcurses();
 
 // print the current state of the screen in memory to the terminal
-void drawscreen(Chip8 *c8);
+void drawScreen(Chip8 c8);
 
 #endif // _DISPLAY_H
