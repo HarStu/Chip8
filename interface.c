@@ -24,13 +24,32 @@ void drawScreen(Chip8 c8) {
     for (int x = 0; x < 64; x++) {
         for (int y = 0; y < 32; y++) {
             if (c8.screen[x][y] == 0) {
-                mvprintw(x, y, "0");
+                mvprintw(y, x, "0");
             } 
             else {
-                mvprintw(x, y, "H");
+                mvprintw(y, x, "H");
             }
         }
     }
-    // refresh the screen to display what's been printed to the buffer
-    refresh();
+}
+
+void drawChip8Info(Chip8 c8) {
+    // print program counter
+    mvprintw(0, 65, "pc: %i", c8.pc);
+
+    // print index register
+    mvprintw(1, 65, "I: %03x", c8.I);
+    
+    // print registers
+    for (int i = 0; i < 0x10; i++) {
+        mvprintw(5 + i, 65, "v%x: %02x\n", i, c8.v[i]);
+    }
+
+    // print stack pointer
+    mvprintw(4, 76, "sp: %x", c8.sp);
+
+    // print stack
+    for (int i = 0; i < 16; i++) {
+        mvprintw(5 + i, 76, "stack[%x]: %03x", i, c8.stack[i]);
+    }
 }
