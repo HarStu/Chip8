@@ -37,7 +37,13 @@ void cycle(Chip8 *c8, FILE *out) {
                 c8->pc = c8->stack[c8->sp] + 2;
             }
             else if (opcode == 0x00E0) {
-                //*TODO*clear screen
+                // 0x00E0
+                // clear screen
+                for (int x = 0; x < 64; x++) {
+                    for (int y = 0; < 32; y++) {
+                        c8->screen[x][y] = 0;
+                    }
+                }
             }
             else {
                 //*TODO*execute machine languge instruction at 0x0NNN
