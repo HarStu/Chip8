@@ -16,7 +16,7 @@ void cycle(Chip8 *c8, FILE *out) {
     // execute opcode
     // increment pc by 2 (16 bits)
 
-    // all chip8 opcodes are 16-bit shorts 
+    // all chip8 opcodes are 16-bit (2-byte) values, which we can represent as an unsigned short
     // here, the value mem[pc] is shifted 8 zeroes to the left, becoming the first 8 bits
     // then, a bitwise OR merges it with the data point next to it, which becomes the next 8 bits
     unsigned short opcode = c8->mem[c8->pc] << 8 | c8->mem[c8->pc+1];
@@ -184,6 +184,7 @@ void cycle(Chip8 *c8, FILE *out) {
             //DXYN
             //draw a spite N pixels tall, from the memory location held in the index register I
             //at the X coordinate v[X] and the Y coordinate v[Y]
+            //the sprite will wrap; its location is more accurately reflected as 
             break;
         case 0xE000:
             break;

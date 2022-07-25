@@ -13,6 +13,24 @@ void loadData(Chip8 *c8, int memSize, const char *path) {
 	fclose(fp);
 }
 
+// fill c8's memory and registers with empty values
+void loadEmptyMem(Chip8 *c8) {
+	for (int i = 0; i < 4097; i++) {
+		c8->mem[i] = 0x00;
+	}
+	for (int i = 0; i < 17; i++) {
+		c8->v[i] = 0x0000;
+	}
+}
+
+// set every pixel on the Chip8 screen to 0
+void initChip8Screen(Chip8 *c8) {
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 4; y++)
+			c8->screen[x][y] = 0b0000000;
+	}
+}
+
 // output the contents of c8->mem in hex
 void outputMemDump(Chip8 *c8, FILE *out) {
 	printf("\n");
@@ -34,12 +52,4 @@ void statusDump(Chip8 *c8, FILE *out) {
 	fprintf(out, "program counter (after running): %04x\nstack pointer: %d", c8->pc, c8->sp);
 }
 
-// fill c8's memory and registers with empty values
-void loadEmptyMem(Chip8 *c8) {
-	for (int i = 0; i < 4097; i++) {
-		c8->mem[i] = 0x00;
-	}
-	for (int i = 0; i < 17; i++) {
-		c8->v[i] = 0x0000;
-	}
-}
+

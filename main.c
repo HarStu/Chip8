@@ -12,9 +12,12 @@ FILE *logfile;
 
 int main() {
 	logfile = fopen("./log.txt", "w+");
-	startcurses();
 
 	loadData(&c8, 4096, "./test.ch8");
+	initChip8Screen(&c8);
+
+	startcurses();
+
 	c8.pc = 0;
 	//program will terminate once pc gets too high
 	//temporary measure so we don't just end at a seg fault
