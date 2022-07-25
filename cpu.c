@@ -3,27 +3,31 @@
 #include <stdio.h>
 #include "chip8.h"
 
+// shorthand for specific nibble(s) within an opcode
+#define X ((opcode & 0x0F00) >> 8)  //0x0X00
+#define Y ((opcode & 0x00F0) >> 4)  //0x00Y0
+#define N ((opcode & 0x000F))       //0x000N
+#define NN ((opcode & 0x00FF))      //0x00NN
+#define NNN ((opcode & 0x0FFF))     //0x0NNN
 
 void cycle(Chip8 *c8, FILE *out) {
-    //fetch opcode
-    //decode opcode
-    //execute opcode
-    
-    //here, the value mem[pc] is shifted 8 zeroes to the left
-    //then, a bitwise OR merges it with the data point next to it
+    // fetch opcode
+    // decode opcode
+    // execute opcode
+    // increment pc by 2 (16 bits)
+
+    // all chip8 opcodes are 16-bit shorts 
+    // here, the value mem[pc] is shifted 8 zeroes to the left, becoming the first 8 bits
+    // then, a bitwise OR merges it with the data point next to it, which becomes the next 8 bits
     unsigned short opcode = c8->mem[c8->pc] << 8 | c8->mem[c8->pc+1];
 
-    //now that we've obtained the opcode, we'll use a bitwise expression
-    //to isolate the first bit. We'll use a switch statement off this
-    //to determine which opcode to run
-    
-    //declaring this variable here since it cannot be properly
-    //used within the switch statement
+    // declaring this variable here since it cannot be properly
+    // used within the switch statement
     unsigned char reg;
 
-    // TODO: rather than decoding each nibble on the fly, all nibbles
-    // should be extracted before entering the switch statement
-    // this should make the code considerably more readable 
+    // switch statement based off the first nibble of the opcode
+    // the exact opcode executed is determined by other nibbles, 
+    // which we've already defined as preprocessor directives
     switch(opcode & 0xF000) {
         case 0x0000:
             if (opcode == 0x00EE) {
