@@ -1,11 +1,15 @@
 #include <stdio.h>
+#include <ncurses.h>
 #include "chip8.h"
 #include "cpu.h"
+#include "display.h"
 
 // declare struct which holds all data about the simulated machine
 Chip8 c8;
 
 int main() {
+	startcurses();
+
 	loadData(&c8, 4096, "./test.ch8");
 	c8.pc = 0;
 	//program will terminate once pc gets too high
@@ -24,5 +28,6 @@ int main() {
 		// store key press state
 		// TODO
 	}
+	endcurses();
 	return 0;
 }

@@ -20,6 +20,10 @@ void cycle(Chip8 *c8) {
     //declaring this variable here since it cannot be properly
     //used within the switch statement
     unsigned char reg;
+
+    //TODO: rather than decoding each nibble on the fly, all nibbles
+    // should be extracted before entering the switch statement
+    // this should make the code considerably more readable 
     switch(opcode & 0xF000) {
         case 0x0000:
             if (opcode == 0x00EE) {
