@@ -4,7 +4,7 @@
 #include "chip8.h"
 
 
-void cycle(Chip8 *c8) {
+void cycle(Chip8 *c8, FILE *out) {
     //fetch opcode
     //decode opcode
     //execute opcode
@@ -21,7 +21,7 @@ void cycle(Chip8 *c8) {
     //used within the switch statement
     unsigned char reg;
 
-    //TODO: rather than decoding each nibble on the fly, all nibbles
+    // TODO: rather than decoding each nibble on the fly, all nibbles
     // should be extracted before entering the switch statement
     // this should make the code considerably more readable 
     switch(opcode & 0xF000) {
@@ -186,7 +186,7 @@ void cycle(Chip8 *c8) {
         default:
             printf("broken opcode!");
     }
-    printf("\nopcode tested: %04x", opcode);
-    statusDump(c8);
-    printf("\n");
+    fprintf(out, "\nopcode tested: %04x\n", opcode);
+    statusDump(c8, out);
+    fprintf(out, "\n");
 }

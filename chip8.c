@@ -14,24 +14,24 @@ void loadData(Chip8 *c8, int memSize, const char *path) {
 }
 
 // output the contents of c8->mem in hex
-void outputMemDump(Chip8 *c8) {
+void outputMemDump(Chip8 *c8, FILE *out) {
 	printf("\n");
 	for (int i = 0; i < 64; i++) {
 		if ((i % 8 == 0) && (i != 0)) {
-			printf("\n");
+			fprintf(out, "\n");
 		}
-		printf(" %04x", c8->mem[i]);
+		fprintf(out," %04x", c8->mem[i]);
 	}
 	printf("\n");
 }
 
 // output the contents of c8's registers, program counter, and stack pointer
-void statusDump(Chip8 *c8) {
+void statusDump(Chip8 *c8, FILE *out) {
 	printf("\n");
 	for (int i = 0x0; i < 0x10; i++) {
-		printf("v%x: %02x\n", i, c8->v[i]);
+		fprintf(out, "v%x: %02x\n", i, c8->v[i]);
 	}
-	printf("program counter (after running): %04x\nstack pointer: %d", c8->pc, c8->sp);
+	fprintf(out, "program counter (after running): %04x\nstack pointer: %d", c8->pc, c8->sp);
 }
 
 // fill c8's memory and registers with empty values

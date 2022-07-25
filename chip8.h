@@ -1,6 +1,8 @@
 #ifndef _CHIP8_H
 #define _CHIP8_H
 
+#include <stdio.h>
+
 // struct holding the full state of a Chip-8 system
 typedef struct Chip8 {
     unsigned char v[16];       // registers (0x0 - 0xF)
@@ -15,12 +17,12 @@ typedef struct Chip8 {
 void loadData(Chip8 *c8, int memSize, const char *path);
 
 // outputs a dump of the data loaded into [mem]
-void outputMemDump(Chip8 *c8);
+void outputMemDump(Chip8 *c8, FILE *out);
 
 // loads mem full of empty data
 void loadEmptyMem(Chip8 *c8);
 
 // prints the value of each register, sp, and pc
-void statusDump(Chip8 *c8);
+void statusDump(Chip8 *c8, FILE *out);
 
 #endif // _CHIP8_H
