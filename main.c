@@ -2,7 +2,7 @@
 #include <ncurses.h>
 #include "chip8.h"
 #include "cpu.h"
-#include "display.h"
+#include "interface.h"
 
 // declare struct which holds all data about the simulated machine
 Chip8 c8;

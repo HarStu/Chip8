@@ -29,7 +29,7 @@ void cycle(Chip8 *c8, FILE *out) {
     // the exact opcode executed is determined by other nibbles, 
     // which we've already defined as preprocessor directives
     switch(opcode & 0xF000) {
-        case 0x0000:
+        case 0x0000: //old
             if (opcode == 0x00EE) {
                 //0x00EE
                 //return from a subroutine
@@ -47,13 +47,13 @@ void cycle(Chip8 *c8, FILE *out) {
             }
             break;
 
-        case 0x1000:
+        case 0x1000: //old
             //0x1NNN
             //jump to address NNN in 0x1NNN
             c8->pc = (opcode & 0x0FFF);	
             break;
 
-        case 0x2000:
+        case 0x2000: //old
             //0x2NNN
             //execute subroutine at NNN
             c8->stack[c8->sp] = c8->pc;
@@ -61,7 +61,7 @@ void cycle(Chip8 *c8, FILE *out) {
             c8->pc = (opcode & 0x0FFF);
             break;
 
-        case 0x3000:
+        case 0x3000: //old
             //0x3XNN
             //skip the following instruction if VX == NN
             reg = (opcode & 0x0F00) >> 8;
@@ -73,7 +73,7 @@ void cycle(Chip8 *c8, FILE *out) {
             }
             break;
 
-        case 0x4000:
+        case 0x4000: //old
             //0x4XNN
             //skip the following instruction if VX != NN
             reg = (opcode & 0x0F00) >> 8;
@@ -85,7 +85,7 @@ void cycle(Chip8 *c8, FILE *out) {
             }
             break;
 
-        case 0x5000:
+        case 0x5000: //old
             //5XY0
             //skip the following instruction if VX is equal to VY
             if(c8->v[(opcode & 0x0F00) >> 8] == c8->v[(opcode & 0x00F0) >> 4]) {
@@ -96,21 +96,21 @@ void cycle(Chip8 *c8, FILE *out) {
             }
             break;
 
-        case 0x6000:
+        case 0x6000: //old
             //6XNN
             //Store the value of NN in register VX
             c8->v[((opcode & 0x0F00) >> 8)] = c8->mem[c8->pc + 1];
             c8->pc += 2;
             break;
 
-        case 0x7000:
+        case 0x7000: //old
             //7XNN
             //Add the value of NN to register VX
             c8->v[((opcode & 0x0F00) >> 8)] = (c8->v[((opcode & 0x0F00) >> 8)] +  c8->mem[c8->pc + 1]) % 256;
             c8->pc += 2;
             break;
 
-        case 0x8000:
+        case 0x8000: //old
             //8XY0
             //store the value of VY in VX
             if ((opcode & 0x000F) == 0x0000) {
@@ -181,6 +181,9 @@ void cycle(Chip8 *c8, FILE *out) {
         case 0xC000:
             break;
         case 0xD000:
+            //DXYN
+            //draw a spite N pixels tall, from the memory location held in the index register I
+            //at the X coordinate v[X] and the Y coordinate v[Y]
             break;
         case 0xE000:
             break;
