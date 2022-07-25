@@ -1,4 +1,4 @@
-#include "display.h"
+#include "interface.h"
 
 #include <stdio.h>
 #include <ncurses.h>
