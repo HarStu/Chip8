@@ -181,7 +181,11 @@ void cycle(Chip8 *c8, FILE *out) {
         case 0x9000:
             break;
         case 0xA000:
+            // 0xANNN
+            // Store the value of NNN in the index register
+            c8->I = NNN;
             break;
+
         case 0xB000:
             break;
         case 0xC000:
