@@ -24,10 +24,10 @@ void loadEmptyMem(Chip8 *c8) {
 }
 
 // set every pixel on the Chip8 screen to 0
-void initChip8Screen(Chip8 *c8) {
+void clearScreen(Chip8 *c8) {
 	for (int x = 0; x < 64; x++) {
 		for (int y = 0; y < 32; y++)
-			c8->screen[x][y] = 0;
+			c8->screen[x][y] = 0x0;
 	}
 }
 

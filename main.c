@@ -14,7 +14,7 @@ int main() {
 	logfile = fopen("./log.txt", "w+");
 
 	loadData(&c8, 4096, "./test.ch8");
-	initChip8Screen(&c8);
+	clearScreen(&c8);
 
 	startcurses();
 

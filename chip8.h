@@ -23,7 +23,7 @@ void loadData(Chip8 *c8, int memSize, const char *path);
 void loadEmptyMem(Chip8 *c8);
 
 // set every pixel on the Chip8 screen to 0
-void initChip8Screen(Chip8 *c8);
+void clearScreen(Chip8 *c8);
 
 
 // OUTPUT FUNCTIONS
