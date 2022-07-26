@@ -10,10 +10,10 @@ Chip8 c8;
 // create log file
 FILE *logfile;
 
-int main() {
+int main(int argc, char *argv[]) {
 	logfile = fopen("./log.txt", "w+");
 
-	loadData(&c8, 4096, "./test.ch8");
+	loadData(&c8, 4096, argv[1]);
 	clearScreen(&c8);
 
 	startcurses();
