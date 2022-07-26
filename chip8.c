@@ -49,7 +49,7 @@ void statusDump(Chip8 *c8, FILE *out) {
 	for (int i = 0x0; i < 0x10; i++) {
 		fprintf(out, "v%x: %02x\n", i, c8->v[i]);
 	}
-	fprintf(out, "program counter (after running): %04x\nstack pointer: %d", c8->pc, c8->sp);
+	fprintf(out, "program counter (after running): %u\nstack pointer: %u\nindex register:%03x", c8->pc, c8->sp, c8->I);
 }
 
 

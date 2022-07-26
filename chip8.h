@@ -31,7 +31,7 @@ void clearScreen(Chip8 *c8);
 // outputs a dump of the data loaded into [mem]
 void outputMemDump(Chip8 *c8, FILE *out);
 
-// prints the value of each register, sp, and pc
+// prints the value of each register, sp, pc, and I
 void statusDump(Chip8 *c8, FILE *out);
 
 #endif // _CHIP8_H

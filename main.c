@@ -19,9 +19,8 @@ int main(int argc, char *argv[]) {
 	startcurses();
 
 	c8.pc = 0;
-	//program will terminate once pc gets too high
-	//temporary measure so we don't just end at a seg fault
-	while (c8.pc < 100) {
+	//program will terminate once pc reaches the end of memory
+	while (c8.pc < 4096) {
 		// hacky solution since timers aren't implemented yet: wait for a keypress
 		getch();
 
