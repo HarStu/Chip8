@@ -14,11 +14,12 @@ int main(int argc, char *argv[]) {
 	logfile = fopen("./log.txt", "w+");
 
 	loadData(&c8, 4096, argv[1]);
+	//outputMemDump(&c8, logfile);
 	clearScreen(&c8);
 
 	startcurses();
 
-	c8.pc = 0;
+	c8.pc = 0x0200;
 	//program will terminate once pc reaches the end of memory
 	while (c8.pc < 4096) {
 		// hacky solution since timers aren't implemented yet: wait for a keypress
