@@ -191,10 +191,26 @@ void cycle(Chip8 *c8, FILE *out) {
         case 0xC000:
             break;
         case 0xD000:
-            //DXYN
-            //draw a spite N pixels tall, from the memory location held in the index register I
-            //at the X coordinate v[X] and the Y coordinate v[Y]
-            //the sprite will wrap; its location is more accurately reflected as 
+            // DXYN
+            // draw a spite N pixels tall (always 8 bit/1 byte wide),
+            // from the memory location held in the index register I
+            // at the X coordinate v[X] and the Y coordinate v[Y]
+            
+            //get starting position for sprites
+            sprX = c8->v[X] % 64;
+            sprY = c8->v[Y] % 32;
+
+            // set the carry flag to 0
+            // if drawing the sprite turns any pixels 'off' again, this will be set back to 1
+            c8->v[0xF] = 0;
+
+            // iterate over N rows
+            for (int h = 0; h < N; h++) {
+                // iterate 8 times, for each bit in the char being read
+                for (int b = 0; b < 8; b++) {
+                    sprChar = c8->mem[c8->I];
+                }
+            }
             break;
         case 0xE000:
             break;
