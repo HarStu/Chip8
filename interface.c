@@ -35,7 +35,7 @@ void drawScreen(Chip8 c8) {
 
 void drawChip8Info(Chip8 c8) {
     // print program counter
-    mvprintw(0, 65, "pc: %i", c8.pc);
+    mvprintw(0, 65, "pc: %03x", c8.pc);
 
     // print index register
     mvprintw(1, 65, "I: %03x", c8.I);
