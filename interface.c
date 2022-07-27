@@ -24,10 +24,10 @@ void drawScreen(Chip8 c8) {
     for (int x = 0; x < 64; x++) {
         for (int y = 0; y < 32; y++) {
             if (c8.screen[x][y] == 0) {
-                mvprintw(y, x, "0");
+                mvprintw(y, x, ".");
             } 
             else {
-                mvprintw(y, x, "H");
+                mvprintw(y, x, "#");
             }
         }
     }
