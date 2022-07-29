@@ -34,7 +34,7 @@ void cycle(Chip8 *c8, FILE *out) {
                 //0x00EE
                 //return from a subroutine
                 c8->sp--;
-                c8->pc = c8->stack[c8->sp] + 2;
+                c8->pc = c8->stack[c8->sp];
             }
             else if (opcode == 0x00E0) {
                 // 0x00E0
@@ -93,7 +93,7 @@ void cycle(Chip8 *c8, FILE *out) {
             c8->v[X] = c8->v[X] + NN;
             break;
 
-        case 0x8000: //old
+        case 0x8000:
             //8XY0
             //store the value of vY in vX
             if (N == 0x0000) {
@@ -143,6 +143,11 @@ void cycle(Chip8 *c8, FILE *out) {
                 }
                 c8->v[X] = c8->v[X] - c8->v[Y];
             }
+            // 8XY6
+            // Store the value of vY shifted one bit right in vX
+            // Set vF to the least significant bit of vY prior to the shift
+            else if (N == 0x0006) {
+            }
             break;
 
         case 0x9000:
@@ -190,13 +195,16 @@ void cycle(Chip8 *c8, FILE *out) {
                     // pixel is either 0 or 1
                     unsigned char pixel = (pixelsChar & (0x80 >> b));
 
-                    // check if the upcoming XOR will disable a currently-on pixel, and set the drawflag accordingly
-                    if ((pixel == 1) && (c8->screen[sprX + b][sprY + h] == 1)) {
-                        c8->v[0xf] = 1;
+                    // confirm that the drawing location we're looking at is actually on-screen
+                    if (((sprX + b) < 64) && ((sprY + h) < 32)) {
+                        // check if the upcoming XOR will disable a currently-on pixel, and set the drawflag accordingly
+                        if ((pixel == 1) && (c8->screen[sprX + b][sprY + h] == 1)) {
+                            c8->v[0xf] = 1;
+                        }
+                        
+                        // value of the sprite pixel is XOR'd agaisnt the value of the screen in order to update the dislpay
+                        c8->screen[sprX + b][sprY + h] ^= pixel;
                     }
-                    
-                    // value of the sprite pixel is XOR'd agaisnt the value of the screen in order to update the dislpay
-                    c8->screen[sprX + b][sprY + h] ^= pixel;
                 }
             }
             fprintf(out,"*");
