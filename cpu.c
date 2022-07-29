@@ -146,8 +146,28 @@ void cycle(Chip8 *c8, FILE *out) {
             // 8XY6
             // Store the value of vY shifted one bit right in vX
             // Set vF to the least significant bit of vY prior to the shift
+            /*
+            CURRENTLY NOT PASSING TEST 
             else if (N == 0x0006) {
+                c8->v[0xF] = (c8->v[Y] & 0x1); // store least significant bit in vF
+                c8->v[X] = (c8->v[Y] >> 1);
             }
+            */
+            // 8XY7
+            // Set vX to vY minus vX
+            // set vF to 00 if a borrow occurs from beyond the highest bit
+            // Set vF to 01 if a borrow does not occur from beyond the highest bit
+            else if (N == 0x0007) {
+                if (c8->v[Y] > c8-> v[X]) {
+                    // borrow occurs
+                    c8->v[0xF] = 0x00;
+                }
+                else {
+                    c8->v[0xF] = 0x01;
+                }
+                c8->v[X] = c8->v[Y] - c8->v[X];
+            }
+
             break;
 
         case 0x9000:
