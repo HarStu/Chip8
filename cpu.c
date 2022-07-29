@@ -177,6 +177,7 @@ void cycle(Chip8 *c8, FILE *out) {
                 c8->pc += 2;
             }
             break;
+
         case 0xA000:
             // 0xANNN
             // Store the value of NNN in the index register
@@ -184,7 +185,11 @@ void cycle(Chip8 *c8, FILE *out) {
             break;
 
         case 0xB000:
+            // BNNN
+            // jump to address NNN + v0
+            c8->pc = (NNN + c8->v[0x0]);
             break;
+
         case 0xC000:
             break;
         case 0xD000: //TODO: NEED PROTECTIONS TO PREVENT DRAWING OUT OF BOUNDS!
