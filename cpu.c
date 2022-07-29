@@ -171,6 +171,11 @@ void cycle(Chip8 *c8, FILE *out) {
             break;
 
         case 0x9000:
+            // 9XY0
+            // skip following instruction if vX != vY
+            if (c8->v[X] != c8->v[Y]) {
+                c8->pc += 2;
+            }
             break;
         case 0xA000:
             // 0xANNN
