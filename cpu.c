@@ -192,20 +192,19 @@ void cycle(Chip8 *c8, FILE *out) {
 
         case 0xC000:
             break;
-        case 0xD000: //TODO: NEED PROTECTIONS TO PREVENT DRAWING OUT OF BOUNDS!
+
+        case 0xD000:
             // DXYN
             // draw a spite N pixels tall (always 8 bit/1 byte wide),
             // from the memory location held in the index register I
             // at the X coordinate v[X] and the Y coordinate v[Y]
-
-            fprintf(out,"\n*******************************\n***SCREEN DRAWING OPCODE %04x***\n", opcode);
-            
+            //fprintf(out,"\n*******************************\n***SCREEN DRAWING OPCODE %04x***\n", opcode);
             //get starting position for sprites
             int sprX = c8->v[X] % 64;
             int sprY = c8->v[Y] % 32;
-            fprintf(out, "Coordinate to draw at:\n\tX: %x\n\tY: %x\n", sprX, sprY);
+            //fprintf(out, "Coordinate to draw at:\n\tX: %x\n\tY: %x\n", sprX, sprY);
             //unsigned int rows = N;
-            fprintf(out, "Lines to draw: \n\tN: %x\n\n", N);
+            //fprintf(out, "Lines to draw: \n\tN: %x\n\n", N);
 
             // set the vf to 0
             // if drawing the sprite turns any pixels 'off' again, this will be set back to 1
@@ -215,7 +214,7 @@ void cycle(Chip8 *c8, FILE *out) {
             for (int h = 0; h < N; h++) {
                 // pixelsChar; the row of 8 pixels being read from memory which compromise this row
                 unsigned char pixelsChar = c8->mem[((c8->I)+h)];
-                fprintf(out, "row[%x]: pixelsChar: %02x from mem[%03x]\n", h, pixelsChar, ((c8->I)+h));
+                //fprintf(out, "row[%x]: pixelsChar: %02x from mem[%03x]\n", h, pixelsChar, ((c8->I)+h));
 
                 // iterate 8 times, for each bit in pixelsChar
                 // each bit is one pixel
@@ -237,12 +236,23 @@ void cycle(Chip8 *c8, FILE *out) {
                     }
                 }
             }
-            fprintf(out,"*");
             break;
 
         case 0xE000:
             break;
+
         case 0xF000:
+            // FX55
+            // store the values of registers v0 through vX inclusive in memory starting at address I
+            // I is set to I + X + 1 after operation
+            // fprintf(out, "\n******storage opcode********");
+            if (NN == 0x0055) {
+                for (int reg = 0; reg < X+1; reg++) {
+                    // fprintf(out, "\n\nstoring value %02x from v[%02x] in mem[%02x]", c8->v[reg], reg, c8->mem[(c8->I) + reg]);
+                    c8->mem[(c8->I) + reg] = c8->v[reg];
+                }
+                c8->I = c8->I + X + 1;
+            }
             break;
 
         default:
