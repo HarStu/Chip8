@@ -248,14 +248,21 @@ void cycle(Chip8 *c8, FILE *out) {
         case 0xF000:
             // FX55
             // store the values of registers v0 through vX inclusive in memory starting at address I
-            // I is set to I + X + 1 after operation
+            // I is set to I + X + 1 after operation in earlier implementations (not here)
             // fprintf(out, "\n******storage opcode********");
             if (NN == 0x0055) {
                 for (int reg = 0; reg < X+1; reg++) {
                     // fprintf(out, "\n\nstoring value %02x from v[%02x] in mem[%02x]", c8->v[reg], reg, c8->mem[(c8->I) + reg]);
                     c8->mem[(c8->I) + reg] = c8->v[reg];
                 }
-                c8->I = c8->I + X + 1;
+            }
+            // FX65
+            // store the values at memory addresses I through I + X in registers v0 through vX
+            // I is set to I + X + 1 after operation in earlier implementations (not here)
+            else if (NN == 0x0065) {
+                for (int reg = 0; reg < X+1; reg++) {
+                    c8->v[reg] = c8->mem[(c8->I) + reg];
+                }
             }
             break;
 
