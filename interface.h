@@ -10,9 +10,9 @@ void startcurses();
 void endcurses();
 
 // print the current state of the screen in memory to the terminal
-void drawScreen(Chip8 c8);
+void writeScreenBuffer(Chip8 c8);
 
 // print debug information
-void drawChip8Info(Chip8 c8);
+void writeStateBuffer(Chip8 c8);
 
 #endif // _DISPLAY_H

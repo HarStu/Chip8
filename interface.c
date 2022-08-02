@@ -14,7 +14,7 @@ void endcurses() {
     endwin();
 }
 
-void drawScreen(Chip8 c8) {
+void writeScreenBuffer(Chip8 c8) {
     // draws the data currently in c8.screen[][] to the terminal
 
     //clear the ncurses screen
@@ -33,7 +33,7 @@ void drawScreen(Chip8 c8) {
     }
 }
 
-void drawChip8Info(Chip8 c8) {
+void writeStateBuffer(Chip8 c8) {
     // print program counter
     mvprintw(0, 65, "pc: %03x", c8.pc);
 

@@ -42,10 +42,10 @@ int main(int argc, char *argv[]) {
 		cycle(&c8, logfile);
 
 		// write the state of the virtual machine's screen to the ncurses buffer
-		drawScreen(c8);
+		writeScreenBuffer(c8);
 
 		// write information about the state of the virtual machine to the ncurses output
-		drawChip8Info(c8);
+		writeStateBuffer(c8);
 
 		// draw the ncurses buffer to the screen;
 		refresh();
