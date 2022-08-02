@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ncurses.h>
+#include <time.h>
 #include "chip8.h"
 #include "cpu.h"
 #include "interface.h"
@@ -10,36 +11,49 @@ Chip8 c8;
 // create log file
 FILE *logfile;
 
+// delay to control the number of cycles which should be executed each second
+struct timespec cycleDelay = {0, 50000000};
+struct timespec cycleDelayRemaining = {0, 0};
+
 int main(int argc, char *argv[]) {
+	// open the logfile
 	logfile = fopen("./log.txt", "w+");
 
+	// load the .ch8 file into the virtual machine's memory
 	loadData(&c8, 4096, argv[1]);
-	//outputMemDump(&c8, logfile);
+
+	// load a blank screen into the virtual machine
 	clearScreen(&c8);
 
+	// start ncurses
 	startcurses();
 
 	c8.pc = 0x0200;
 	//program will terminate once pc reaches the end of memory
 	while (c8.pc < 4096) {
-		// hacky solution since timers aren't implemented yet: wait for a keypress
-		getch();
+		// check for a keypress
+		// TODO
+
+		// Delay the program to control the number of cycles per second
+		nanosleep(&cycleDelay, &cycleDelayRemaining);
 
 		// fetch, decode, execute opcode
 		// increment pc by 2
 		cycle(&c8, logfile);
+
+		// write the state of the virtual machine's screen to the ncurses buffer
 		drawScreen(c8);
+
+		// write information about the state of the virtual machine to the ncurses output
 		drawChip8Info(c8);
+
+		// draw the ncurses buffer to the screen;
 		refresh();
 
 		// update timers
-		// TEMPORARY HACKY SOLUTION: waiting for a keypress
 		// TODO
 
 		// if the drawflag is set, draw the screen
-		// TODO
-
-		// store key press state
 		// TODO
 	}
 	endcurses();
