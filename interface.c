@@ -8,7 +8,7 @@ void startcurses() {
     initscr();
     cbreak();
     noecho();
-    nodelay();
+    nodelay(stdscr, true);
 }
 
 void endcurses() {
