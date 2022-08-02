@@ -249,11 +249,27 @@ void cycle(Chip8 *c8, FILE *out) {
             break;
 
         case 0xF000:
+            // FX07
+            // set vX to the current value of the delay timer
+            // this might have major issues on account of how my timer is only set once per cycle
+            if (NN == 0x0007) {
+
+            }
+            // FX15
+            // set the delay time to the value in vX
+            else if (NN == 0x0015) {
+                c8->dt = c8->v[X];
+            }
+            // FX18 
+            // set the sound timer to the value in vX
+            else if (NN == 0x0018) {
+                c8->st = c8->v[X];
+            }
             // FX55
             // store the values of registers v0 through vX inclusive in memory starting at address I
             // I is set to I + X + 1 after operation in earlier implementations (not here)
             // fprintf(out, "\n******storage opcode********");
-            if (NN == 0x0055) {
+            else if (NN == 0x0055) {
                 for (int reg = 0; reg < X+1; reg++) {
                     // fprintf(out, "\n\nstoring value %02x from v[%02x] in mem[%02x]", c8->v[reg], reg, c8->mem[(c8->I) + reg]);
                     c8->mem[(c8->I) + reg] = c8->v[reg];
