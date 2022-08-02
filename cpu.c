@@ -265,6 +265,15 @@ void cycle(Chip8 *c8, FILE *out) {
             else if (NN == 0x0018) {
                 c8->st = c8->v[X];
             }
+            // FX1E
+            // Add the value of vX to I
+            // if vX I overflows, set vF to 1
+            else if (NN == 0x001E) {
+                if (c8->I + c8->v[X] > 0x0FFF) {
+                    c8->v[0xF] = 1;
+                }
+                c8->I = c8->I + c8->v[X];
+            }
             // FX55
             // store the values of registers v0 through vX inclusive in memory starting at address I
             // I is set to I + X + 1 after operation in earlier implementations (not here)
