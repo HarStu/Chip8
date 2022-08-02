@@ -260,7 +260,7 @@ void cycle(Chip8 *c8, FILE *out) {
             }
             // EXA1
             // skip one instruction if the key corresponding to the value in vX is NOT pressed
-            if (NN == 0x00A1) {
+            else if (NN == 0x00A1) {
                 unsigned char input = getch();
                 if (c8->v[X] != returnChip8Key(input)) {
                      c8->pc += 2;
@@ -274,6 +274,18 @@ void cycle(Chip8 *c8, FILE *out) {
             // this might have major issues on account of how my timer is only set once per cycle
             if (NN == 0x0007) {
                 c8->v[X] = c8->dt;
+            }
+            // FX0A
+            // block further execution until a key is pressed
+            // when a key is pressed, store its value in vX
+            else if (NN == 0x000A) {
+                while(true) {
+                    unsigned char input = getch();
+                    if (input != ERR) {
+                        c8->v[X] = returnChip8Key(input);
+                        break;
+                    }
+                }
             }
             // FX15
             // set the delay time to the value in vX
