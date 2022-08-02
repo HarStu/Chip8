@@ -81,3 +81,59 @@ void updateTimers(Chip8 *c8, unsigned int dec) {
         c8->st = (c8->st) - dec;
     }
 }
+
+unsigned char returnChip8Key(unsigned char keypress) {
+    unsigned char c8Press;
+    switch(keypress) {
+        case '1':
+            c8Press = 0x1;
+            break;
+        case '2':
+            c8Press = 0x2;
+            break;
+        case '3':
+            c8Press = 0x3;
+            break;
+        case '4':
+            c8Press = 0xC;
+            break;
+        case 'q':
+            c8Press = 0x4;
+            break;
+        case 'w':
+            c8Press = 0x5;
+            break;
+        case 'e':
+            c8Press = 0x6;
+            break;
+        case 'r':
+            c8Press = 0xD;
+            break;
+        case 'a':
+            c8Press = 0x7;
+            break;
+        case 's':
+            c8Press = 0x8;
+            break;
+        case 'd':
+            c8Press = 0x9;
+            break;
+        case 'f':
+            c8Press = 0xE;
+            break;
+        case 'z':
+            c8Press = 0xA;
+            break;
+        case 'x':
+            c8Press = 0x0;
+            break;
+        case 'c':
+            c8Press = 0xB;
+            break;
+        case 'v':
+            c8Press = 0xF;
+            break;
+        
+        return c8Press;
+    }
+}

@@ -2,7 +2,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <ncurses.h>
 #include "chip8.h"
+#include "interface.h"
 
 // shorthand for specific nibble(s) within an opcode
 #define X ((opcode & 0x0F00) >> 8)  //0x0X00
@@ -246,6 +248,24 @@ void cycle(Chip8 *c8, FILE *out) {
             break;
 
         case 0xE000:
+            // EX9E 
+            // skip one instruction if the key corresponding to the value in vX is pressed
+            if (NN == 0x009E) {
+                unsigned char input = getch();
+                if (input != ERR) {
+                    if (c8->v[X] == returnChip8Key(input)) {
+                        c8->pc += 2;
+                    }
+                }
+            }
+            // EXA1
+            // skip one instruction if the key corresponding to the value in vX is NOT pressed
+            if (NN == 0x00A1) {
+                unsigned char input = getch();
+                if (c8->v[X] != returnChip8Key(input)) {
+                     c8->pc += 2;
+                 }
+            }
             break;
 
         case 0xF000:
