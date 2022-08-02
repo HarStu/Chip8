@@ -273,7 +273,7 @@ void cycle(Chip8 *c8, FILE *out) {
             // set vX to the current value of the delay timer
             // this might have major issues on account of how my timer is only set once per cycle
             if (NN == 0x0007) {
-
+                c8->v[X] = c8->dt;
             }
             // FX15
             // set the delay time to the value in vX
