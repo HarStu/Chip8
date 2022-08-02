@@ -5,6 +5,8 @@
 
 // struct holding the full state of a Chip-8 system
 typedef struct Chip8 {
+    unsigned char dt;               // delay timer
+    unsigned char st;               // sound timer
     unsigned char v[16];            // registers (0x0 - 0xF)
     unsigned short pc;              // progam counter
     unsigned short I;               // index register
@@ -33,5 +35,6 @@ void outputMemDump(Chip8 *c8, FILE *out);
 
 // prints the value of each register, sp, pc, and I
 void statusDump(Chip8 *c8, FILE *out);
+
 
 #endif // _CHIP8_H

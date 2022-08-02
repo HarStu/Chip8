@@ -15,6 +15,9 @@ FILE *logfile;
 struct timespec cycleDelay = {0, 50000000};
 struct timespec cycleDelayRemaining = {0, 0};
 
+// timeval structs used to decrement timers accurately
+struct timespec start, end; 
+
 int main(int argc, char *argv[]) {
 	// open the logfile
 	logfile = fopen("./log.txt", "w+");
@@ -24,6 +27,9 @@ int main(int argc, char *argv[]) {
 
 	// load a blank screen into the virtual machine
 	clearScreen(&c8);
+
+	// init timeval structs
+	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 
 	// start ncurses
 	startcurses();
@@ -51,10 +57,11 @@ int main(int argc, char *argv[]) {
 		refresh();
 
 		// update timers
-		// TODO
-
-		// if the drawflag is set, draw the screen
-		// TODO
+		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+		long microsecondDelta = ((end.tv_sec - start.tv_sec) * 1000000) + (end.tv_nsec + start.tv_nsec);
+		clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+		uint64_t timerUnitsDelta = microsecondDelta / 16666;
+		updateTimers(&c8, timerUnitsDelta);
 	}
 	endcurses();
 	fclose(logfile);

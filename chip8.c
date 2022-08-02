@@ -6,11 +6,16 @@
 
 // load data from the file located at 'path' into the memory of the simulated
 // machine c8. Must specify the size of c8's memory (in bytes)
+// also sets the timers to 0
 void loadData(Chip8 *c8, int memSize, const char *path) {
 	FILE *fp;
 	fp = fopen(path,"rb");
 	while (fread((c8->mem + 0x0200),1,memSize,fp)); // doing a little pointer arithmetic 
 	fclose(fp);
+
+	// set timers to 0 since we're loading data in here anyway
+	c8->dt = 0;
+	c8->st = 0;
 }
 
 // fill c8's memory and registers with empty values

@@ -15,4 +15,7 @@ void writeScreenBuffer(Chip8 c8);
 // print debug information
 void writeStateBuffer(Chip8 c8);
 
+// update timers
+void updateTimers(Chip8 *c8, unsigned int dec);
+
 #endif // _DISPLAY_H
