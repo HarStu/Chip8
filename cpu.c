@@ -195,6 +195,9 @@ void cycle(Chip8 *c8, FILE *out) {
             break;
 
         case 0xC000:
+            // CXNN
+            // Generates a random number, binary ANDs that number against NN, store result in VX
+            c8->v[X] = ((rand() % 0x100) & NN); // resulting random number is between 0x0 and 0xFF. Ranges won't be perfect but I accept that.
             break;
 
         case 0xD000:
