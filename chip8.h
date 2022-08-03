@@ -21,6 +21,9 @@ typedef struct Chip8 {
 // loads data from file into mem
 void loadData(Chip8 *c8, int memSize, const char *path);
 
+// load font data into mem
+void loadFont(Chip8 *c8);
+
 // loads mem full of empty data
 void loadEmptyMem(Chip8 *c8);
 

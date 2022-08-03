@@ -25,6 +25,9 @@ int main(int argc, char *argv[]) {
 	// load the .ch8 file into the virtual machine's memory
 	loadData(&c8, 4096, argv[1]);
 
+	// load font data
+	loadFont(&c8);
+
 	// load a blank screen into the virtual machine
 	clearScreen(&c8);
 

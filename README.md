@@ -1,4 +1,7 @@
 # Chip8
 Chip8 Interpreter written in C
 
-A basic chip8 interpreter written in C, using ncurses for input/output
+Simple Chip-8 interpreter written in C, using ncurses for I/O.
+
+Hex keypad is controlled by 1234qwerasdfzxcv.
+Since ncurses lacks audio support, a "BEEP" is printed onscreen in place of sound output. 
