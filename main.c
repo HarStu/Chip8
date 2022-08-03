@@ -12,7 +12,7 @@ Chip8 c8;
 FILE *logfile;
 
 // delay to control the number of cycles which should be executed each second
-struct timespec cycleDelay = {0, 50000000};
+struct timespec cycleDelay = {0, 5000000};
 struct timespec cycleDelayRemaining = {0, 0};
 
 // timeval structs used to decrement timers accurately

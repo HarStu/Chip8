@@ -306,6 +306,11 @@ void cycle(Chip8 *c8, FILE *out) {
                 }
                 c8->I = c8->I + c8->v[X];
             }
+            // FX29
+            // set I to the address of the hex character stored in vX
+            else if (NN == 0x0029) {
+                c8->I = (c8->v[X] * 0x05) + 0x50;
+            }
             // FX55
             // store the values of registers v0 through vX inclusive in memory starting at address I
             // I is set to I + X + 1 after operation in earlier implementations (not here)
