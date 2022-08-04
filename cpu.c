@@ -13,7 +13,7 @@
 #define NN ((opcode & 0x00FF))      //0x00NN
 #define NNN ((opcode & 0x0FFF))     //0x0NNN
 
-unsigned char cycle(Chip8 *c8, FILE *out) {
+void cycle(Chip8 *c8, FILE *out) {
     // grab input
     unsigned char input = getch();
 
