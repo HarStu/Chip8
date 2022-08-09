@@ -18,7 +18,7 @@ void endcurses() {
 void writeScreenBuffer(Chip8 c8) {
     // draws the data currently in c8.screen[][] to the terminal
 
-    //clear the ncurses screen
+    // clear the ncurses screen
     clear();
 
     // print the bits in c8.screen[][] to the screen buffer as binary numbers
@@ -46,6 +46,9 @@ void writeStateBuffer(Chip8 c8) {
         mvprintw(5 + i, 65, "v%x: %02x\n", i, c8.v[i]);
     }
 
+    // print input
+    mvprintw(0, 76, "input: %x", c8.input);
+
     // print stack pointer
     mvprintw(4, 76, "sp: %x", c8.sp);
 
@@ -53,6 +56,7 @@ void writeStateBuffer(Chip8 c8) {
     for (int i = 0; i < 16; i++) {
         mvprintw(5 + i, 76, "stack[%x]: %03x", i, c8.stack[i]);
     }
+
 
     // print timers
     mvprintw(2, 65, "dt: %i", c8.dt);
@@ -82,58 +86,59 @@ void updateTimers(Chip8 *c8, unsigned int dec) {
     }
 }
 
-unsigned char returnChip8Key(unsigned char keypress) {
-    unsigned char c8Press;
+void updateInput(Chip8 *c8) {
+    char keypress = getch();
+
     switch(keypress) {
         case '1':
-            c8Press = 0x1;
+            c8->input = 0x1;
             break;
         case '2':
-            c8Press = 0x2;
+            c8->input = 0x2;
             break;
         case '3':
-            c8Press = 0x3;
+            c8->input = 0x3;
             break;
         case '4':
-            c8Press = 0xC;
+            c8->input = 0xC;
             break;
         case 'q':
-            c8Press = 0x4;
+            c8->input = 0x4;
             break;
         case 'w':
-            c8Press = 0x5;
+            c8->input = 0x5;
             break;
         case 'e':
-            c8Press = 0x6;
+            c8->input = 0x6;
             break;
         case 'r':
-            c8Press = 0xD;
+            c8->input = 0xD;
             break;
         case 'a':
-            c8Press = 0x7;
+            c8->input = 0x7;
             break;
         case 's':
-            c8Press = 0x8;
+            c8->input = 0x8;
             break;
         case 'd':
-            c8Press = 0x9;
+            c8->input = 0x9;
             break;
         case 'f':
-            c8Press = 0xE;
+            c8->input = 0xE;
             break;
         case 'z':
-            c8Press = 0xA;
+            c8->input = 0xA;
             break;
         case 'x':
-            c8Press = 0x0;
+            c8->input = 0x0;
             break;
         case 'c':
-            c8Press = 0xB;
+            c8->input = 0xB;
             break;
         case 'v':
-            c8Press = 0xF;
+            c8->input = 0xF;
             break;
-        
-        return c8Press;
+        case ERR:
+            c8->input = 0xFF;
     }
 }

@@ -12,7 +12,7 @@ Chip8 c8;
 FILE *logfile;
 
 // delay to control the number of cycles which should be executed each second
-struct timespec cycleDelay = {0, 5000000};
+struct timespec cycleDelay = {0, 25000000};
 struct timespec cycleDelayRemaining = {0, 0};
 
 // timeval structs used to decrement timers accurately
@@ -40,11 +40,12 @@ int main(int argc, char *argv[]) {
 	c8.pc = 0x0200;
 	//program will terminate once pc reaches the end of memory
 	while (c8.pc < 4096) {
-		// check for a keypress
-		// TODO
-
 		// Delay the program to control the number of cycles per second
 		nanosleep(&cycleDelay, &cycleDelayRemaining);
+
+		// fetch input
+		// also writes the raw value returned by getch to the ncurses buffer
+		updateInput(&c8);
 
 		// fetch, decode, execute opcode
 		// increment pc by 2

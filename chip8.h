@@ -5,6 +5,7 @@
 
 // struct holding the full state of a Chip-8 system
 typedef struct Chip8 {
+    unsigned char input;            // key currently pressed; because of ncurses limitations, we can only detect one key at a time
     unsigned char dt;               // delay timer
     unsigned char st;               // sound timer
     unsigned char v[16];            // registers (0x0 - 0xF)

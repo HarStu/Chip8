@@ -18,7 +18,8 @@ void writeStateBuffer(Chip8 c8);
 // update timers
 void updateTimers(Chip8 *c8, unsigned int dec);
 
-// given a keyboard key, return the corresponding chip8 key
-unsigned char returnChip8Key(unsigned char keypress);
+// update the c8.input value
+// if key is pressed, input will be set to 0xFF
+void updateInput(Chip8 *c8);
 
 #endif // _DISPLAY_H

@@ -14,9 +14,6 @@
 #define NNN ((opcode & 0x0FFF))     //0x0NNN
 
 void cycle(Chip8 *c8, FILE *out) {
-    // grab input
-    unsigned char input = getch();
-
     // fetch opcode
     // increment pc by 2 bytes
     // decode opcode
@@ -254,8 +251,8 @@ void cycle(Chip8 *c8, FILE *out) {
             // EX9E 
             // skip one instruction if the key corresponding to the value in vX is pressed
             if (NN == 0x009E) {
-                if (input != ERR) {
-                    if (c8->v[X] == returnChip8Key(input)) {
+                if (c8->input != 0xFF) {
+                    if (c8->v[X] == c8->input) {
                         c8->pc += 2;
                     }
                 }
@@ -263,7 +260,7 @@ void cycle(Chip8 *c8, FILE *out) {
             // EXA1
             // skip one instruction if the key corresponding to the value in vX is NOT pressed
             else if (NN == 0x00A1) {
-                if (c8->v[X] != returnChip8Key(input)) {
+                if (c8->v[X] != c8->input) {
                      c8->pc += 2;
                  }
             }
@@ -281,8 +278,8 @@ void cycle(Chip8 *c8, FILE *out) {
             // when a key is pressed, store its value in vX
             else if (NN == 0x000A) {
                 while(true) {
-                    if (input != ERR) {
-                        c8->v[X] = returnChip8Key(input);
+                    if (c8->input != 0xFF) {
+                        c8->v[X] = c8->input;
                         break;
                     }
                 }
