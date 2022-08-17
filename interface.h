@@ -3,17 +3,17 @@
 
 #include "chip8.h"
 
-// call all the functions necessary to setup the ncurses enviroment
-void startcurses();
+// call all the functions necessary to setup the SDL enviroment
+void startSDL();
 
-// clean up and terminate the ncurses enviorment
-void endcurses();
+// clean up and terminate the SDL enviroment
+void endSDL();
 
 // print the current state of the screen in memory to the terminal
-void writeScreenBuffer(Chip8 c8);
+void drawScreen(Chip8 c8);
 
 // print debug information
-void writeStateBuffer(Chip8 c8);
+void drawState(Chip8 c8);
 
 // update timers
 void updateTimers(Chip8 *c8, unsigned int dec);

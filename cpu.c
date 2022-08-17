@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <ncurses.h>
+#include <stdbool.h>
 #include "chip8.h"
 #include "interface.h"
 
@@ -277,7 +277,7 @@ void cycle(Chip8 *c8, FILE *out) {
             // block further execution until a key is pressed
             // when a key is pressed, store its value in vX
             else if (NN == 0x000A) {
-                while(true) {
+                while(true) { 
                     if (c8->input != 0xFF) {
                         c8->v[X] = c8->input;
                         break;

@@ -22,10 +22,10 @@ int main(int argc, char *argv[]) {
 	// open the logfile
 	logfile = fopen("./log.txt", "w+");
 
-	// load the .ch8 file into the virtual machine's memory
+	// load the .ch8 file into virtual machine memory
 	loadData(&c8, 4096, argv[1]);
 
-	// load font data
+	// load font data into virtual machine memory
 	loadFont(&c8);
 
 	// load a blank screen into the virtual machine
@@ -33,9 +33,6 @@ int main(int argc, char *argv[]) {
 
 	// init timeval structs
 	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-
-	// start ncurses
-	startcurses();
 
 	c8.pc = 0x0200;
 	//program will terminate once pc reaches the end of memory
@@ -51,14 +48,7 @@ int main(int argc, char *argv[]) {
 		// increment pc by 2
 		cycle(&c8, logfile);
 
-		// write the state of the virtual machine's screen to the ncurses buffer
-		writeScreenBuffer(c8);
-
-		// write information about the state of the virtual machine to the ncurses output
-		writeStateBuffer(c8);
-
-		// draw the ncurses buffer to the screen;
-		refresh();
+		// TODO Draw the screen
 
 		// update timers
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
@@ -67,7 +57,6 @@ int main(int argc, char *argv[]) {
 		uint64_t timerUnitsDelta = microsecondDelta / 16666;
 		updateTimers(&c8, timerUnitsDelta);
 	}
-	endcurses();
 	fclose(logfile);
 	return 0;
 }
