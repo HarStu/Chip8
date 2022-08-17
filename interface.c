@@ -26,8 +26,10 @@ void startSDL(Screen* scr) {
     }
 }
 
-void endSDL() {
-    // TODO
+void endSDL(Screen* scr) {
+    // Destroy window and end SDL process
+    SDL_DestroyWindow(scr->win);
+    SDL_Quit();
 }
 
 void drawScreen(Chip8 c8) {

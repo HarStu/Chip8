@@ -62,6 +62,7 @@ int main(int argc, char *argv[]) {
 		uint64_t timerUnitsDelta = microsecondDelta / 16666;
 		updateTimers(&c8, timerUnitsDelta);
 	}
+	endSDL();
 	fclose(logfile);
 	return 0;
 }

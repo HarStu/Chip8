@@ -27,6 +27,9 @@ void cycle(Chip8 *c8, FILE *out) {
     // iterate pc here; next time an opcode is fetched, it'll be the one after the current opcode
     c8->pc += 2;
 
+    // print out opcode for debug purposes
+    printf("opcode: %04x\n", opcode);
+
     // switch statement based off the first nibble of the opcode
     // the exact opcode executed is determined by other nibbles, 
     // which we've already defined as preprocessor directives

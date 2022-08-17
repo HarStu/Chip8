@@ -77,7 +77,6 @@ void outputMemDump(Chip8 *c8, FILE *out) {
 
 // output the contents of c8's registers, program counter, and stack pointer
 void statusDump(Chip8 *c8, FILE *out) {
-	printf("\n");
 	for (int i = 0x0; i < 0x10; i++) {
 		fprintf(out, "v%x: %02x\n", i, c8->v[i]);
 	}
