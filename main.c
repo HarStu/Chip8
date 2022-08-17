@@ -11,6 +11,9 @@ Chip8 c8;
 // create log file
 FILE *logfile;
 
+// struct holding SDL window and surface
+Screen scr;
+
 // delay to control the number of cycles which should be executed each second
 struct timespec cycleDelay = {0, 25000000};
 struct timespec cycleDelayRemaining = {0, 0};
@@ -34,6 +37,9 @@ int main(int argc, char *argv[]) {
 	// init timeval structs
 	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 
+	// start SDL and create window
+	startSDL(&scr);
+
 	c8.pc = 0x0200;
 	//program will terminate once pc reaches the end of memory
 	while (c8.pc < 4096) {
@@ -41,7 +47,6 @@ int main(int argc, char *argv[]) {
 		nanosleep(&cycleDelay, &cycleDelayRemaining);
 
 		// fetch input
-		// also writes the raw value returned by getch to the ncurses buffer
 		updateInput(&c8);
 
 		// fetch, decode, execute opcode
