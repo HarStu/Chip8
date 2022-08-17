@@ -32,8 +32,39 @@ void endSDL(Screen* scr) {
     SDL_Quit();
 }
 
-void drawScreen(Chip8 c8) {
-    // TODO
+void drawScreen(Chip8 *c8, Screen *scr) {
+    // draw the virtual machine screen to the SDL screen
+
+    // load images to use for pixels which are turned on and off
+    SDL_Surface *onPixel = SDL_LoadBMP("./onPixel.bmp");
+    SDL_Surface *offPixel = SDL_LoadBMP("./offPixel.bmp");
+
+    // clear the screen
+    SDL_FillRect(scr->sur, NULL, SDL_MapRGB((scr->sur)->format, 0xFF, 0xFF, 0xFF));
+
+    // draw each pixel onto the screen
+    for (int w = 0; w < 64; w++) {
+        for (int h = 0; h < 32; h++) {
+            // struct to represent the pixel being drawn
+            SDL_Rect pixel;
+            pixel.w = 2;
+            pixel.h = 2;
+            
+            pixel.x = (w * 2) + 5;
+            pixel.y = (h * 2) + 5;
+
+            // draw pixel
+            if (c8->screen[w][h] == 0x0) {
+                SDL_BlitSurface(offPixel, NULL, scr->sur, &pixel);
+            }
+            else if (c8->screen[w][h] == 0x1) {
+                SDL_BlitSurface(onPixel, NULL, scr->sur, &pixel);
+            }
+        }
+    }
+
+    // update the screen to show the buffer which has been drawn to
+    SDL_UpdateWindowSurface(scr->win);
 }
 
 void writeStateBuffer(Chip8 c8) {

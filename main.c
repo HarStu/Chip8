@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
 		cycle(&c8, logfile);
 
 		// TODO Draw the screen
+		drawScreen(&c8, &scr);
 
 		// update timers
 		clock_gettime(CLOCK_MONOTONIC_RAW, &end);

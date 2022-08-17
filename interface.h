@@ -20,8 +20,8 @@ void startSDL(Screen *scr);
 // clean up and terminate the SDL enviroment
 void endSDL();
 
-// print the current state of the screen in memory to the terminal
-void drawScreen(Chip8 c8);
+// draw the virtual machine screen to the SDL screen
+void drawScreen(Chip8 *c8, Screen *scr);
 
 // print debug information
 void drawState(Chip8 c8);
