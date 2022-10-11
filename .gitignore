@@ -1,2 +1,5 @@
 *.txt
 *.ch8
+./roms/*
+H_CHIP_*
+*.o

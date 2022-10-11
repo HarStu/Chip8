@@ -10,7 +10,7 @@ TARGET = H_CHIP_8
 # libraries we're linking against
 LINKER_FLAGS = -lSDL2
 
-default: all
+default: clean all
 
 all: main.c chip8.o cpu.o interface.o
 	$(CC) $(CFLAGS) $(TARGET) main.c chip8.o cpu.o interface.o $(LINKER_FLAGS)
