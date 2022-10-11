@@ -83,11 +83,16 @@ void outputMemDump(Chip8 *c8, FILE *out) {
 	fprintf(out, "\n\n");
 }
 
-// output the contents of c8's registers, program counter, and stack pointer
+// output the contents of c8's registers, keypad, program counter, and stack pointer
 void statusDump(Chip8 *c8, FILE *out) {
 	for (int i = 0x0; i < 0x10; i++) {
 		fprintf(out, "v%x: %02x\n", i, c8->v[i]);
 	}
+
+	for (int i = 0x0; i < 0x10; i++) {
+		fprintf(out, "key %x: %01x\n", i, c8->keypad[i]);
+	}
+
 	fprintf(out, "program counter (after running): %03x\nstack pointer: %x\nindex register: %03x", c8->pc, c8->sp, c8->I);
 }
 
