@@ -40,7 +40,6 @@ int main(int argc, char *argv[]) {
 	// start SDL and create window
 	startSDL(&scr);
 
-	c8.pc = 0x0200;
 	//program will terminate once pc reaches the end of memory
 	while (c8.pc < 4096) {
 		// Delay the program to control the number of cycles per second
