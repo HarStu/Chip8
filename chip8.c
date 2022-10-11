@@ -16,6 +16,11 @@ void loadData(Chip8 *c8, int memSize, const char *path) {
 	// set program counter to the start of the program
 	c8->pc = 0x0200;
 
+	// set the value of the hex keys to 0x00 (unpressed)
+	for (int i = 0; i < 16; i++) {
+		c8->keypad[i] = 0x00;
+	}
+
 	// set timers to 0 since we're loading data in here anyway
 	c8->dt = 0;
 	c8->st = 0;

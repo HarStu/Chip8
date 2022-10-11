@@ -254,16 +254,14 @@ void cycle(Chip8 *c8, FILE *out) {
             // EX9E 
             // skip one instruction if the key corresponding to the value in vX is pressed
             if (NN == 0x009E) {
-                if (c8->input != 0xFF) {
-                    if (c8->v[X] == c8->input) {
-                        c8->pc += 2;
-                    }
+                if (c8->keypad[c8->v[X]] != 0x00) {
+                     c8->pc += 2;
                 }
             }
             // EXA1
             // skip one instruction if the key corresponding to the value in vX is NOT pressed
             else if (NN == 0x00A1) {
-                if (c8->v[X] != c8->input) {
+                if (c8->keypad[c8->v[X]] == 0x00) {
                      c8->pc += 2;
                  }
             }
@@ -280,11 +278,15 @@ void cycle(Chip8 *c8, FILE *out) {
             // block further execution until a key is pressed
             // when a key is pressed, store its value in vX
             else if (NN == 0x000A) {
-                while(true) { 
-                    if (c8->input != 0xFF) {
-                        c8->v[X] = c8->input;
-                        break;
+                bool block_flag = true;
+                for (int i = 0x00; i < 0x10; i++) {
+                    if (c8->keypad[i] != 0x00) {
+                        c8->v[X] = i;
+                        block_flag = false;
                     }
+                }
+                if (block_flag == true) {
+                    c8->pc -= 2;
                 }
             }
             // FX15

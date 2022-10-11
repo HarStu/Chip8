@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 	// open the logfile
 	logfile = fopen("./log.txt", "w+");
 
-	// load the .ch8 file into virtual machine memory
+	// init virtual machine memory and load .ch8 file
 	loadData(&c8, 4096, argv[1]);
 
 	// load font data into virtual machine memory
