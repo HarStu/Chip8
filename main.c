@@ -14,6 +14,9 @@ FILE *logfile;
 // struct holding SDL window and surface
 Screen scr;
 
+// flag for SDL event loop
+bool quit_SDL = false;
+
 // delay to control the number of cycles which should be executed each second
 struct timespec cycleDelay = {0, 25000000};
 struct timespec cycleDelayRemaining = {0, 0};
@@ -40,6 +43,27 @@ int main(int argc, char *argv[]) {
 	// start SDL and create window
 	startSDL(&scr);
 
+	// SDL event handler
+	SDL_Event e;
+
+	// SDL event loop
+	while (quit_SDL == false) {
+		// handling pending events
+		while (SDL_PollEvent(&e) != 0) {
+			// request to quit SDL
+			if (e.type == SDL_QUIT) {
+				quit_SDL = true;
+			}
+		}
+
+		// run virtual machine cpu cycle (fetch, decode, execute opcode)
+		cycle(&c8, logfile);
+
+		// draw the screen
+		drawScreen(&c8, &scr);
+	}
+
+	/* OLD MAIN LOOP - now handled above in SDL event loop
 	//program will terminate once pc reaches the end of memory
 	while (c8.pc < 4096) {
 		// Delay the program to control the number of cycles per second
@@ -62,6 +86,8 @@ int main(int argc, char *argv[]) {
 		uint64_t timerUnitsDelta = microsecondDelta / 16666;
 		updateTimers(&c8, timerUnitsDelta);
 	}
+	*/
+
 	endSDL();
 	fclose(logfile);
 	return 0;
