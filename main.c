@@ -17,12 +17,6 @@ Screen scr;
 // flag for SDL event loop
 bool quit_SDL = false;
 
-// delay to control the number of cycles which should be executed each second
-struct timespec cycleDelay = {0, 25000000};
-struct timespec cycleDelayRemaining = {0, 0};
-
-// timeval structs used to decrement timers accurately
-struct timespec start, end; 
 
 int main(int argc, char *argv[]) {
 	// open the logfile
@@ -36,9 +30,6 @@ int main(int argc, char *argv[]) {
 
 	// load a blank screen into the virtual machine
 	clearScreen(&c8);
-
-	// init timeval structs
-	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 
 	// start SDL and create window
 	startSDL(&scr);
@@ -62,94 +53,22 @@ int main(int argc, char *argv[]) {
 
 			// update virtual machine keypad state
 			// move this statement into interface.c updateInput() later
-			else if (e.type == SDL_KEYDOWN) {
-				switch(e.key.keysym.sym) {
-					case SDLK_1:
-						c8.keypad[0x00] = 0x01;
-						break;
-					case SDLK_2:
-						c8.keypad[0x01] = 0x01;
-						break;
-					case SDLK_3:
-						c8.keypad[0x02] = 0x01;
-						break;
-					case SDLK_4:
-						c8.keypad[0x03] = 0x01;
-						break;
-					case SDLK_q:
-						c8.keypad[0x04] = 0x01;
-						break;
-					case SDLK_w:
-						c8.keypad[0x05] = 0x01;
-						break;
-					case SDLK_e:
-						c8.keypad[0x06] = 0x01;
-						break;
-					case SDLK_r:
-      					c8.keypad[0x07] = 0x01;
-						break;
-					case SDLK_a:                  					
-       					c8.keypad[0x08] = 0x01;
-						break;
-					case SDLK_s:
-      					c8.keypad[0x09] = 0x01;
-						break;
-					case SDLK_d:
-      					c8.keypad[0x0a] = 0x01;				
-						break;
-					case SDLK_f:
-						c8.keypad[0x0b] = 0x01;
-						break;
-					case SDLK_z:
-						c8.keypad[0x0c] = 0x01;
-						break;
-					case SDLK_x:
-						c8.keypad[0x0d] = 0x01;
-						break;
-					case SDLK_c:
-						c8.keypad[0x0e] = 0x01;
-						break;
-					case SDLK_v:
-						c8.keypad[0x0f] = 0x01;
-						break;
-				}
+			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
+				updateInput(&c8, e);
 			}
 		}
 
+		// temporary delay
 		SDL_Delay(1000);
 
-		// run virtual machine cpu cycle (fetch, decode, execute opcode)
+		// emulate the CPU cycle (fetch, decode, execute opcode)
 		cycle(&c8, logfile);
 
 		// draw the screen
 		drawScreen(&c8, &scr);
 	}
 
-	/* OLD MAIN LOOP - now handled above in SDL event loop
-	//program will terminate once pc reaches the end of memory
-	while (c8.pc < 4096) {
-		// Delay the program to control the number of cycles per second
-		nanosleep(&cycleDelay, &cycleDelayRemaining);
-
-		// fetch input
-		updateInput(&c8);
-
-		// fetch, decode, execute opcode
-		// increment pc by 2
-		cycle(&c8, logfile);
-
-		// TODO Draw the screen
-		drawScreen(&c8, &scr);
-
-		// update timers
-		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-		long microsecondDelta = ((end.tv_sec - start.tv_sec) * 1000000) + (end.tv_nsec + start.tv_nsec);
-		clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-		uint64_t timerUnitsDelta = microsecondDelta / 16666;
-		updateTimers(&c8, timerUnitsDelta);
-	}
-	*/
-
+	// once SDL quits, clean up and end the program
 	endSDL();
 	fclose(logfile);
 	return 0;

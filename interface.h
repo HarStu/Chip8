@@ -31,6 +31,6 @@ void updateTimers(Chip8 *c8, unsigned int dec);
 
 // update the c8.input value
 // if key is pressed, input will be set to 0xFF
-void updateInput(Chip8 *c8);
+void updateInput(Chip8 *c8, SDL_Event e);
 
 #endif // _DISPLAY_H

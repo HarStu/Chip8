@@ -89,6 +89,57 @@ void updateTimers(Chip8 *c8, unsigned int dec) {
     }
 }
 
-void updateInput(Chip8 *c8) {
-    // TODO
+void updateInput(Chip8 *c8, SDL_Event e) {
+    if (e.type == SDL_KEYDOWN) {
+        switch(e.key.keysym.sym) {
+            case SDLK_1:
+                c8->keypad[0x00] = 0x01;
+                break;
+            case SDLK_2:
+                c8->keypad[0x01] = 0x01;
+                break;
+            case SDLK_3:
+                c8->keypad[0x02] = 0x01;
+                break;
+            case SDLK_4:
+                c8->keypad[0x03] = 0x01;
+                break;
+            case SDLK_q:
+                c8->keypad[0x04] = 0x01;
+                break;
+            case SDLK_w:
+                c8->keypad[0x05] = 0x01;
+                break;
+            case SDLK_e:
+                c8->keypad[0x06] = 0x01;
+                break;
+            case SDLK_r:
+                c8->keypad[0x07] = 0x01;
+                break;
+            case SDLK_a:                  					
+                c8->keypad[0x08] = 0x01;
+                break;
+            case SDLK_s:
+                c8->keypad[0x09] = 0x01;
+                break;
+            case SDLK_d:
+                c8->keypad[0x0a] = 0x01;				
+                break;
+            case SDLK_f:
+                c8->keypad[0x0b] = 0x01;
+                break;
+            case SDLK_z:
+                c8->keypad[0x0c] = 0x01;
+                break;
+            case SDLK_x:
+                c8->keypad[0x0d] = 0x01;
+                break;
+            case SDLK_c:
+                c8->keypad[0x0e] = 0x01;
+                break;
+            case SDLK_v:
+                c8->keypad[0x0f] = 0x01;
+                break;
+        }
+    }
 }
