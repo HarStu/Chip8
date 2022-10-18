@@ -7,6 +7,8 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+int prevTime = 0;
+
 void startSDL(Screen* scr) {
     // start SDL and throw an error if it fails to start
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -71,21 +73,24 @@ void writeStateBuffer(Chip8 c8) {
     // TODO
 }
 
-void updateTimers(Chip8 *c8, unsigned int dec) {
-    // update delay timer
-    if (dec > c8->dt) {
-        c8->dt = 0;
-    }
-    else {
-        c8->dt = (c8->dt) - dec;
-    }
+void updateTimers(Chip8 *c8) {
+    int currentTime = SDL_GetTicks();
+    // rounding 16.666 to 17
 
-    // update sound timer
-    if (dec > c8->st) {
-        c8->st = 0;
-    }
-    else {
-        c8->st = (c8->st) - dec;
+    if ((currentTime - prevTime) > 17) {
+
+        printf("\nTIMER UPDATE");
+        printf("\ndt: %02x", c8->dt);
+        printf("\nst: %02x", c8->st);
+
+        if (c8->dt > 0) {
+            c8->dt--;
+        }
+
+        if (c8->st > 0) {
+            c8->st--;
+        }
+        prevTime = currentTime;
     }
 }
 

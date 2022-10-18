@@ -27,7 +27,7 @@ void drawScreen(Chip8 *c8, Screen *scr);
 void drawState(Chip8 c8);
 
 // update timers
-void updateTimers(Chip8 *c8, unsigned int dec);
+void updateTimers(Chip8 *c8);
 
 // update the c8.input value
 // if key is pressed, input will be set to 0xFF

@@ -28,7 +28,7 @@ void cycle(Chip8 *c8, FILE *out) {
     c8->pc += 2;
 
     // print out opcode for debug purposes
-    printf("opcode: %04x\n", opcode);
+    // printf("opcode: %04x\n", opcode);
 
     // switch statement based off the first nibble of the opcode
     // the exact opcode executed is determined by other nibbles, 
@@ -270,7 +270,6 @@ void cycle(Chip8 *c8, FILE *out) {
         case 0xF000:
             // FX07
             // set vX to the current value of the delay timer
-            // this might have major issues on account of how my timer is only set once per cycle
             if (NN == 0x0007) {
                 c8->v[X] = c8->dt;
             }

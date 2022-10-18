@@ -17,6 +17,12 @@ Screen scr;
 // flag for SDL event loop
 bool quit_SDL = false;
 
+// desired cycles per second
+// true cycle count may be slightly lower
+const int target_cycles = 300;
+
+// ms delay between cycles corresponding to the targeted number of cycles per second
+const int cycle_delay = (1000 / target_cycles);
 
 int main(int argc, char *argv[]) {
 	// open the logfile
@@ -46,26 +52,29 @@ int main(int argc, char *argv[]) {
 
 		// handling pending events
 		while (SDL_PollEvent(&e) != 0) {
-			// request to quit SDL
+			// quit SDL event
 			if (e.type == SDL_QUIT) {
 				quit_SDL = true;
 			}
 
+			// keypad event
 			// update virtual machine keypad state
-			// move this statement into interface.c updateInput() later
 			else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
 				updateInput(&c8, e);
 			}
 		}
 
-		// temporary delay
-		SDL_Delay(1000);
+		// manage timers
+		updateTimers(&c8);
 
 		// emulate the CPU cycle (fetch, decode, execute opcode)
 		cycle(&c8, logfile);
 
 		// draw the screen
 		drawScreen(&c8, &scr);
+
+		// delay to regulate execution speed
+		// SDL_Delay(cycle_delay);
 	}
 
 	// once SDL quits, clean up and end the program
