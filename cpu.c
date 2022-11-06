@@ -312,6 +312,14 @@ void cycle(Chip8 *c8, FILE *out) {
             else if (NN == 0x0029) {
                 c8->I = (c8->v[X] * 0x05) + 0x50;
             }
+            // FX33
+            // convert the 3 decimal digits of vX to 3 seperate values
+            // store the hundreds-place value at I, tens-place at I+1, and ones-place at I+2
+            else if (NN == 0x0033) {
+                c8->mem[c8->I] = (c8->v[X] / 100);
+                c8->mem[c8->I+0x01] = ((c8->v[X] % 100) / 10);
+                c8->mem[c8->I+0x02] = ((c8->v[X] % 100) % 10);
+            }
             // FX55
             // store the values of registers v0 through vX inclusive in memory starting at address I
             // I is set to I + X + 1 after operation in earlier implementations (not here)
