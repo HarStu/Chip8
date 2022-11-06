@@ -45,10 +45,6 @@ int main(int argc, char *argv[]) {
 
 	// SDL event loop
 	while (quit_SDL == false) {
-		// clear keypad state before checking event queue
-		for (int i = 0; i < 0x10; i++) {
-			c8.keypad[i] = 0x00;
-		}
 
 		// handling pending events
 		while (SDL_PollEvent(&e) != 0) {
