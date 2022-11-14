@@ -4,69 +4,77 @@
 #include <SDL2/SDL.h>
 #include "chip8.h"
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int WIDTH = 64;
+const int HEIGHT = 32;
 
 int prevTime = 0;
 
 void startSDL(Screen* scr) {
     // start SDL and throw an error if it fails to start
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         printf("SDL could not init");
     }
     else {
-        // create window
-        scr->win = SDL_CreateWindow("Chip 8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        // init window
+        scr->win = SDL_CreateWindow("H's Chip 8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, (WIDTH * 10), (HEIGHT * 10), SDL_WINDOW_SHOWN);
         // if SDL fails to init the window, throw an error
         if (scr->win == NULL) {
-            printf("Window not created! SDL_Error: %s\n", SDL_GetError());
+            printf("Window init failed! SDL_Error: %s\n", SDL_GetError());
         }
-        // otherwise, get the window surface, paint it white, and update it
-        scr->sur = SDL_GetWindowSurface(scr->win);
-        SDL_FillRect(scr->sur, NULL, SDL_MapRGB((scr->sur)->format, 0xFF, 0xFF, 0xFF));
-        SDL_UpdateWindowSurface(scr->win);
+
+        // init renderer
+        scr->ren = SDL_CreateRenderer(scr->win, -1, SDL_RENDERER_ACCELERATED);
+        // if SDL fails to init renderer, throw an error
+        if (scr->ren == NULL) {
+            printf("Renderer init failed! SDL_Error: %s\n", SDL_GetError());
+        }
+
+        // init texture
+        scr->tex = SDL_CreateTexture(scr->ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
+        // if SDL fails to init texture, throw an error
+        if (scr-> tex == NULL) {
+            printf("Texture init failed! SDL_Error: %s\n", SDL_GetError());
+        }
     }
 }
 
 void endSDL(Screen* scr) {
-    // Destroy window and end SDL process
+    // Destroy SDL entities and end SDL process
+    SDL_DestroyTexture(scr->tex);
+    SDL_DestroyRenderer(scr->ren);
     SDL_DestroyWindow(scr->win);
+    scr->tex == NULL;
+    scr->ren == NULL;
+    scr->win == NULL;
     SDL_Quit();
 }
 
 void drawScreen(Chip8 *c8, Screen *scr) {
     // draw the virtual machine screen to the SDL screen
-
-    // load images to use for pixels which are turned on and off
-    SDL_Surface *onPixel = SDL_LoadBMP("./onPixel.bmp");
-    SDL_Surface *offPixel = SDL_LoadBMP("./offPixel.bmp");
-
-    // clear the screen
-    SDL_FillRect(scr->sur, NULL, SDL_MapRGB((scr->sur)->format, 0xFF, 0xFF, 0xFF));
-
-    // draw each pixel onto the screen
-    for (int w = 0; w < 64; w++) {
-        for (int h = 0; h < 32; h++) {
-            // struct to represent the pixel being drawn
-            SDL_Rect pixel;
-            pixel.w = 2;
-            pixel.h = 2;
-            
-            pixel.x = (w * 2) + 5;
-            pixel.y = (h * 2) + 5;
-
-            // draw pixel
-            if (c8->screen[w][h] == 0x0) {
-                SDL_BlitSurface(offPixel, NULL, scr->sur, &pixel);
+    int *pixel;
+    int pitch = 32;
+    SDL_SetRenderDrawColor(scr->ren, 255, 255, 255, 255);
+    SDL_RenderClear(scr->ren);
+    SDL_LockTexture(scr->tex, NULL, (void **)&pixel, &pitch);
+    for (int x = 0; x < 64; x++) {
+        for (int y = 0; y < 32; y++) {
+            if (c8->screen[x][y] > 0x00) {
+                pixel[x + y * 64] = 0xFFFFFFFF;
             }
-            else if (c8->screen[w][h] == 0x1) {
-                SDL_BlitSurface(onPixel, NULL, scr->sur, &pixel);
+            else {
+                pixel[x + y * 64] = 0x00000000;
             }
         }
     }
-
-    // update the screen to show the buffer which has been drawn to
-    SDL_UpdateWindowSurface(scr->win);
+    SDL_UnlockTexture(scr->tex);
+    SDL_SetRenderTarget(scr->ren, NULL);
+    SDL_Rect texture_rect;
+    texture_rect.x = 0;
+    texture_rect.y = 0;
+    texture_rect.w = (WIDTH * 10);
+    texture_rect.h = (HEIGHT * 10);
+    SDL_RenderCopy(scr->ren, scr->tex, NULL, &texture_rect);
+    SDL_RenderPresent(scr->ren);
 }
 
 void writeStateBuffer(Chip8 c8) {
@@ -79,9 +87,9 @@ void updateTimers(Chip8 *c8) {
 
     if ((currentTime - prevTime) > 17) {
 
-        printf("\nTIMER UPDATE");
-        printf("\ndt: %02x", c8->dt);
-        printf("\nst: %02x", c8->st);
+        //printf("\nTIMER UPDATE");
+        //printf("\ndt: %02x", c8->dt);
+        //printf("\nst: %02x", c8->st);
 
         if (c8->dt > 0) {
             c8->dt--;

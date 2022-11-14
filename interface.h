@@ -7,7 +7,8 @@
 // struct containing both the SDL window and SDL surface inside of it
 typedef struct Screen {
     SDL_Window* win;
-    SDL_Surface* sur;
+    SDL_Renderer* ren;
+    SDL_Texture* tex;
 } Screen;
 
 // consts dictating SDL window size 

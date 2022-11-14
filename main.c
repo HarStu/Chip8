@@ -1,9 +1,12 @@
 #include <stdio.h>
-#include <ncurses.h>
 #include <time.h>
 #include "chip8.h"
 #include "cpu.h"
 #include "interface.h"
+
+// simple, readable booleans
+#define true 1
+#define false 0
 
 // declare struct which holds all data about the simulated machine
 Chip8 c8;
@@ -15,11 +18,11 @@ FILE *logfile;
 Screen scr;
 
 // flag for SDL event loop
-bool quit_SDL = false;
+int quit_SDL = false;
 
 // desired cycles per second
 // true cycle count may be slightly lower
-const int target_cycles = 300;
+const int target_cycles = 500;
 
 // ms delay between cycles corresponding to the targeted number of cycles per second
 const int cycle_delay = (1000 / target_cycles);
@@ -70,7 +73,7 @@ int main(int argc, char *argv[]) {
 		drawScreen(&c8, &scr);
 
 		// delay to regulate execution speed
-		// SDL_Delay(cycle_delay);
+		SDL_Delay(cycle_delay);
 	}
 
 	// once SDL quits, clean up and end the program
