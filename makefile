@@ -7,10 +7,13 @@ CFLAGS = -g -Wall -o
 # the target build executable
 TARGET = H_CHIP_8
 
-default: all
+# libraries we're linking against
+LINKER_FLAGS = -lSDL2
+
+default: clean all
 
 all: main.c chip8.o cpu.o interface.o
-	$(CC) $(CFLAGS) $(TARGET) main.c chip8.o cpu.o interface.o -lncurses
+	$(CC) $(CFLAGS) $(TARGET) main.c chip8.o cpu.o interface.o $(LINKER_FLAGS)
 
 chip8.o: chip8.c
 	$(CC) chip8.c -o chip8.o -c

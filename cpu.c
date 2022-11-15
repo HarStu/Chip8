@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <ncurses.h>
+#include <stdbool.h>
 #include "chip8.h"
 #include "interface.h"
 
@@ -26,6 +26,9 @@ void cycle(Chip8 *c8, FILE *out) {
 
     // iterate pc here; next time an opcode is fetched, it'll be the one after the current opcode
     c8->pc += 2;
+
+    // print out opcode for debug purposes
+    // printf("opcode: %04x\n", opcode);
 
     // switch statement based off the first nibble of the opcode
     // the exact opcode executed is determined by other nibbles, 
@@ -251,16 +254,14 @@ void cycle(Chip8 *c8, FILE *out) {
             // EX9E 
             // skip one instruction if the key corresponding to the value in vX is pressed
             if (NN == 0x009E) {
-                if (c8->input != 0xFF) {
-                    if (c8->v[X] == c8->input) {
-                        c8->pc += 2;
-                    }
+                if (c8->keypad[c8->v[X]] != 0x00) {
+                     c8->pc += 2;
                 }
             }
             // EXA1
             // skip one instruction if the key corresponding to the value in vX is NOT pressed
             else if (NN == 0x00A1) {
-                if (c8->v[X] != c8->input) {
+                if (c8->keypad[c8->v[X]] == 0x00) {
                      c8->pc += 2;
                  }
             }
@@ -269,7 +270,6 @@ void cycle(Chip8 *c8, FILE *out) {
         case 0xF000:
             // FX07
             // set vX to the current value of the delay timer
-            // this might have major issues on account of how my timer is only set once per cycle
             if (NN == 0x0007) {
                 c8->v[X] = c8->dt;
             }
@@ -277,11 +277,15 @@ void cycle(Chip8 *c8, FILE *out) {
             // block further execution until a key is pressed
             // when a key is pressed, store its value in vX
             else if (NN == 0x000A) {
-                while(true) {
-                    if (c8->input != 0xFF) {
-                        c8->v[X] = c8->input;
-                        break;
+                bool block_flag = true;
+                for (int i = 0x00; i < 0x10; i++) {
+                    if (c8->keypad[i] != 0x00) {
+                        c8->v[X] = i;
+                        block_flag = false;
                     }
+                }
+                if (block_flag == true) {
+                    c8->pc -= 2;
                 }
             }
             // FX15
@@ -307,6 +311,14 @@ void cycle(Chip8 *c8, FILE *out) {
             // set I to the address of the hex character stored in vX
             else if (NN == 0x0029) {
                 c8->I = (c8->v[X] * 0x05) + 0x50;
+            }
+            // FX33
+            // convert the 3 decimal digits of vX to 3 seperate values
+            // store the hundreds-place value at I, tens-place at I+1, and ones-place at I+2
+            else if (NN == 0x0033) {
+                c8->mem[c8->I] = (c8->v[X] / 100);
+                c8->mem[c8->I+0x01] = ((c8->v[X] % 100) / 10);
+                c8->mem[c8->I+0x02] = ((c8->v[X] % 100) % 10);
             }
             // FX55
             // store the values of registers v0 through vX inclusive in memory starting at address I
