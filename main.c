@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// once SDL quits, clean up and end the program
-	endSDL();
+	endSDL(&scr);
 	fclose(logfile);
 	return 0;
 }
