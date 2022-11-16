@@ -135,45 +135,43 @@ void cycle(Chip8 *c8, FILE *out) {
                 c8->v[X] = (c8->v[X] + c8->v[Y]) % 256;
             }
             //8XY5
-            //Subtract the value of vY from vX
-            //Set vF to 00 if a borrow occurs from beyond the highest bit
-            //Set vF to 01 if a borrow does not occur from beyond the highest bit
+            //Set vX to vX minux vY
+            //Set vF to 01 if vX > vY (no borrow occurs)
+            //Set vF to 00 otherwise
             else if (N == 0x0005) {
-                if (c8->v[Y] > c8->v[X]) {
-                    //borrow occurs
-                    c8->v[0xF] = 0x00;
+                if (c8->v[X] > c8->v[Y]) {
+                    c8->v[0xF] = 0x01;
                 }
                 else {
-                    c8->v[0xF] = 0x01;
+                    c8->v[0xF] = 0x00;
                 }
                 c8->v[X] = c8->v[X] - c8->v[Y];
             }
             // 8XY6
-            // Store the value of vY shifted one bit right in vX
             // Set vF to the least significant bit of vY prior to the shift
+            // Store the value of vY shifted one bit right in vX
             else if (N == 0x0006) {
                 c8->v[0xF] = (c8->v[Y] & 0x1); // store least significant bit in vF
                 c8->v[X] = (c8->v[Y] >> 1);
             }
             // 8XY7
             // Set vX to vY minus vX
-            // set vF to 00 if a borrow occurs from beyond the highest bit
-            // Set vF to 01 if a borrow does not occur from beyond the highest bit
+            // set vF to 01 if vY > vX (no borrow occurs)
+            // Set vF to 00 otherwise
             else if (N == 0x0007) {
-                if (c8->v[Y] > c8-> v[X]) {
-                    // borrow occurs
-                    c8->v[0xF] = 0x00;
+                if (c8->v[Y] > c8->v[X]) {
+                    c8->v[0xF] = 0x01;
                 }
                 else {
-                    c8->v[0xF] = 0x01;
+                    c8->v[0xF] = 0x00;
                 }
                 c8->v[X] = c8->v[Y] - c8->v[X];
             }
             // 8XYE
+            // Set vF to the most significant bit of vY prior to the shift
             // Store the value of vY shifted one bit left in vX
-            // Set vF to the least most significant bit of vY prior to the shift
             else if (N == 0x000E) {
-                c8->v[0xF] = ((c8->v[Y] & 0x8) >> 3); // store most significant bit in vF
+                c8->v[0xF] = ((c8->v[Y] & 0x8) >> 3); // store most significant bit of vY in vF
                 c8->v[X] = (c8->v[Y] << 1);
             }
 
