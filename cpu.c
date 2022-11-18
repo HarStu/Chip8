@@ -28,7 +28,7 @@ void cycle(Chip8 *c8, FILE *out) {
     c8->pc += 2;
 
     // print out opcode for debug purposes
-    // printf("opcode: %04x\n", opcode);
+    printf("opcode: %04x\n", opcode);
 
     // switch statement based off the first nibble of the opcode
     // the exact opcode executed is determined by other nibbles, 
@@ -208,44 +208,36 @@ void cycle(Chip8 *c8, FILE *out) {
             // draw a spite N pixels tall (always 8 bit/1 byte wide),
             // from the memory location held in the index register I
             // at the X coordinate v[X] and the Y coordinate v[Y]
-            //fprintf(out,"\n*******************************\n***SCREEN DRAWING OPCODE %04x***\n", opcode);
-            //get starting position for sprites
+            // get starting position for sprites
             int sprX = c8->v[X] % 64;
             int sprY = c8->v[Y] % 32;
-            //fprintf(out, "Coordinate to draw at:\n\tX: %x\n\tY: %x\n", sprX, sprY);
             //unsigned int rows = N;
-            //fprintf(out, "Lines to draw: \n\tN: %x\n\n", N);
 
             // set the vf to 0
             // if drawing the sprite turns any pixels 'off' again, this will be set back to 1
-            c8->v[0xf] = 0;
+            c8->v[0xF] = 0;
 
             // iterate over N rows
             for (int h = 0; h < N; h++) {
                 // pixelsChar; the row of 8 pixels being read from memory which compromise this row
                 unsigned char pixelsChar = c8->mem[((c8->I)+h)];
-                //fprintf(out, "row[%x]: pixelsChar: %02x from mem[%03x]\n", h, pixelsChar, ((c8->I)+h));
 
                 // iterate 8 times, for each bit in pixelsChar
                 // each bit is one pixel
                 for (int b = 0; b < 8; b++) {
                     // 0x80 = 0b10000000
-                    // as we iterate through b, we use the bitwise AND to isolate and check each bit/pixel in pixelsChar
-                    // pixel is either 0 or 1
-                    unsigned char pixel = (pixelsChar & (0x80 >> b));
-
-                    // confirm that the drawing location we're looking at is actually on-screen
-                    if (((sprX + b) < 64) && ((sprY + h) < 32)) {
-                        // check if the upcoming XOR will disable a currently-on pixel, and set the drawflag accordingly
-                        if ((pixel == 1) && (c8->screen[sprX + b][sprY + h] == 1)) {
-                            c8->v[0xf] = 1;
+                    // as we iterate through b, we use the bitwise AND to isolate and check each bit/pixel
+                    // if the pixel exists, then we potentially need to update the screen
+                    if ((pixelsChar & (0x80 >> b)) != 0) { 
+                        // check the pixel we're drawing to; if it's already set, we have a collision, and need to set vF
+                        if (c8->screen[sprX + b][sprY + h] == 1) {
+                            c8->v[0xF] = 0x01;
                         }
-                        
-                        // value of the sprite pixel is XOR'd agaisnt the value of the screen in order to update the dislpay
-                        c8->screen[sprX + b][sprY + h] ^= pixel;
+                        // XOR to update the screen
+                        c8->screen[sprX + b][sprY + h] ^= 1;
+                        }
                     }
                 }
-            }
             break;
 
         case 0xE000:
