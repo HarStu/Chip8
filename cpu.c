@@ -227,8 +227,8 @@ void cycle(Chip8 *c8, FILE *out) {
                 for (int b = 0; b < 8; b++) {
                     // 0x80 = 0b10000000
                     // as we iterate through b, we use the bitwise AND to isolate and check each bit/pixel
-                    // if the pixel exists, then we potentially need to update the screen
-                    if ((pixelsChar & (0x80 >> b)) != 0) { 
+                    // if the pixel exists, and the drawing location is on-screen, then we potentially need to update the screen
+                    if (((pixelsChar & (0x80 >> b)) != 0) && (((sprX + b) < 64) && ((sprY + h) < 32))) { 
                         // check the pixel we're drawing to; if it's already set, we have a collision, and need to set vF
                         if (c8->screen[sprX + b][sprY + h] == 1) {
                             c8->v[0xF] = 0x01;
